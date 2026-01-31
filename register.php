@@ -47,11 +47,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
+    <a href="index.php" class="back-home">
+        <i class="fas fa-arrow-left"></i> Back to Home
+    </a>
+
     <div class="login-wrapper">
         <div class="login-card" style="max-width: 500px;">
-            <h2 class="login-title">Create Account</h2>
-            <p style="text-align: center; color: #6B7280; margin-bottom: 2rem;">Join as an Invigilator</p>
-            
+            <div class="login-header">
+                <div class="logo-icon" style="margin: 0 auto 1.5rem;">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h2 class="login-title">Create Account</h2>
+                <p class="login-subtitle">Join as an Invigilator</p>
+            </div>            
             <?php if ($error): ?>
                 <div class="error-msg"><i class="fas fa-exclamation-circle" style="margin-right: 0.5rem;"></i> <?php echo htmlspecialchars($error); ?></div>
             <?php endif; ?>

@@ -21,53 +21,111 @@ if (isset($_SESSION['user_id'])) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         .hero {
+            padding: 8rem 0;
+            background: linear-gradient(to bottom, #ffffff, #f1f5f9);
+            position: relative;
+            overflow: hidden;
             text-align: center;
-            padding: 5rem 1rem;
-            background: linear-gradient(135deg, #ffffff 0%, #f3f4f6 100%);
-            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(99, 102, 241, 0.05) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
         }
 
         .hero h1 {
-            font-size: 3.5rem;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, #4f46e5, #ec4899);
+            font-size: 4rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            color: #1e293b;
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
         .hero p {
             font-size: 1.25rem;
-            color: #6b7280;
-            max-width: 600px;
-            margin: 0 auto 2.5rem;
+            color: var(--text-muted);
+            margin-bottom: 3rem;
+            line-height: 1.8;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .hero-actions .btn {
+            padding: 1rem 2.5rem;
+            font-size: 1rem;
         }
 
         .features {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
-            padding: 4rem 1rem;
-            max-width: 1200px;
+            padding: 5rem 2rem;
+            max-width: 1400px;
             margin: 0 auto;
         }
 
         .feature-card {
             background: white;
-            padding: 2rem;
-            border-radius: 1rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 3rem 2rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
             text-align: center;
-            transition: transform 0.2s;
         }
 
         .feature-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-light);
         }
 
         .feature-icon {
-            font-size: 2.5rem;
-            color: #4f46e5;
+            width: 64px;
+            height: 64px;
+            background: #eff6ff;
+            color: var(--primary-color);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            margin: 0 auto 1.5rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
             margin-bottom: 1rem;
+            color: var(--text-main);
+        }
+
+        .feature-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
         }
     </style>
 </head>
@@ -75,26 +133,32 @@ if (isset($_SESSION['user_id'])) {
     <header>
         <nav>
             <div class="logo">
-                <i class="fas fa-graduation-cap" style="color: var(--primary-color); margin-right: 0.5rem;"></i>
-                ExamSystem
+                <div class="logo-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <span>Invigilation System</span>
             </div>
             <div class="nav-links">
-                <a href="login.php">Login</a>
-                <a href="register.php" class="btn" style="padding: 0.5rem 1rem; font-size: 0.9rem; box-shadow: none;">Get Started</a>
+                <a href="login.php"><i class="fas fa-sign-in-alt"></i> <span>Login</span></a>
+                <a href="register.php" class="active"><i class="fas fa-user-plus"></i> <span>Get Started</span></a>
             </div>
         </nav>
     </header>
 
     <div class="hero">
-        <h1>Exam Invigilation <br>Made Simple</h1>
-        <p>Streamline exam scheduling, invigilator assignments, and reporting with our modern management platform.</p>
-        <div style="display: flex; gap: 1rem; justify-content: center;">
-            <a href="login.php" class="btn" style="font-size: 1.1rem; padding: 1rem 2rem;">
-                <i class="fas fa-sign-in-alt" style="margin-right: 0.5rem;"></i> Login
-            </a>
-            <a href="register.php" class="btn btn-secondary" style="font-size: 1.1rem; padding: 1rem 2rem;">
-                <i class="fas fa-user-plus" style="margin-right: 0.5rem;"></i> Register
-            </a>
+        <div class="container">
+            <div class="hero-content">
+                <h1>Exam Invigilation <br><span class="text-gradient">Made Simple</span></h1>
+                <p>Streamline exam scheduling, invigilator assignments, and reporting with our modern management platform. Built for efficiency and security.</p>
+                <div class="hero-actions">
+                    <a href="login.php" class="btn">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </a>
+                    <a href="register.php" class="btn btn-secondary">
+                        <i class="fas fa-user-plus"></i> Register Now
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 

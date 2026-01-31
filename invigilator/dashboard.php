@@ -30,36 +30,51 @@ $assignments = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <header>
         <nav>
             <div class="logo">
-                <i class="fas fa-clipboard-user" style="color: var(--primary-color); margin-right: 8px;"></i> 
-                Invigilator Portal
+                <div class="logo-icon">
+                    <i class="fas fa-clipboard-user"></i>
+                </div>
+                <span>Invigilator Portal</span>
             </div>
             <div class="nav-links">
-                <a href="dashboard.php" style="color: var(--primary-color);"><i class="fas fa-home"></i> Dashboard</a>
-                <div style="display: flex; align-items: center; gap: 1rem; margin-left: 1rem; padding-left: 1rem; border-left: 1px solid #E5E7EB;">
-                    <span style="font-size: 0.9rem; color: #4B5563; font-weight: 500;">
-                        <i class="fas fa-user-circle" style="color: var(--primary-color);"></i> 
-                        <?php echo isset($_SESSION['full_name']) ? htmlspecialchars($_SESSION['full_name']) : 'Invigilator'; ?>
-                    </span>
-                    <a href="../logout.php" style="color: #EF4444;" title="Logout"><i class="fas fa-sign-out-alt"></i></a>
+                <a href="dashboard.php" class="active"><i class="fas fa-home"></i> <span>Dashboard</span></a>
+            </div>
+            <div class="user-menu">
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <span class="user-name"><?php echo isset($_SESSION['full_name']) ? htmlspecialchars($_SESSION['full_name']) : 'Invigilator'; ?></span>
                 </div>
+                <a href="../logout.php" class="logout-btn" title="Logout"><i class="fas fa-sign-out-alt"></i></a>
             </div>
         </nav>
     </header>
 
-    <div class="container">
-        <h1>My Exam Schedule</h1>
+    <div class="main-content">
+        <div class="container">
+            <div class="welcome-section">
+                <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+                    <div>
+                        <h1>My Exam Schedule</h1>
+                        <p>Welcome, <strong><?php echo htmlspecialchars($_SESSION['full_name']); ?></strong>. Here are your assigned invigilation duties.</p>
+                    </div>
+                    <div class="time-badge" style="background: white; border: 1px solid var(--border-color);">
+                        <i class="fas fa-user-clock"></i> Duty Roster
+                    </div>
+                </div>
+            </div>
         
-        <div class="dashboard-grid" style="grid-template-columns: 1fr;">
-            <div class="card">
-                <h2><i class="fas fa-calendar-alt"></i> Upcoming Assignments</h2>
-                <div class="table-container">
-                    <table>
+            <div class="content-card">
+                <div class="card-header">
+                    <h2><i class="fas fa-calendar-check"></i> Assigned Examinations</h2>
+                </div>
+                <div class="table-responsive">
+                    <table class="styled-table">
                         <thead>
                             <tr>
-                                <th>Course</th>
-                                <th>Date</th>
-                                <th>Time</th>
-                                <th>Location</th>
+                                <th>Examination Details</th>
+                                <th>Schedule</th>
+                                <th>Venue</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
@@ -68,34 +83,66 @@ $assignments = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <?php foreach ($assignments as $a): ?>
                             <tr>
                                 <td>
-                                    <strong><?php echo htmlspecialchars($a['course_code']); ?></strong><br>
-                                    <span style="color: #6B7280; font-size: 0.9em;"><?php echo htmlspecialchars($a['course_name']); ?></span>
+                                    <div class="course-info">
+                                        <span class="course-code text-gradient"><?php echo htmlspecialchars($a['course_code']); ?></span>
+                                        <span class="course-name"><?php echo htmlspecialchars($a['course_name']); ?></span>
+                                    </div>
                                 </td>
-                                <td><i class="fas fa-calendar-day" style="color: #9CA3AF;"></i> <?php echo htmlspecialchars($a['exam_date']); ?></td>
-                                <td><i class="fas fa-clock" style="color: #9CA3AF;"></i> <?php echo htmlspecialchars($a['start_time'] . ' - ' . $a['end_time']); ?></td>
-                                <td><i class="fas fa-map-marker-alt" style="color: #9CA3AF;"></i> <?php echo htmlspecialchars($a['location']); ?></td>
+                                <td>
+                                    <div style="display: flex; flex-direction: column; gap: 4px;">
+                                        <span style="font-weight: 600; font-size: 0.95rem; color: var(--text-main);">
+                                            <?php echo date('M d, Y', strtotime($a['exam_date'])); ?>
+                                        </span>
+                                        <span class="time-badge" style="width: fit-content; font-size: 0.75rem;">
+                                            <i class="far fa-clock"></i> <?php echo date('H:i', strtotime($a['start_time'])) . ' - ' . date('H:i', strtotime($a['end_time'])); ?>
+                                        </span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span style="font-size: 0.9rem; color: var(--text-main);">
+                                        <i class="fas fa-location-dot" style="color: #ef4444; margin-right: 4px;"></i> 
+                                        <?php echo htmlspecialchars($a['location']); ?>
+                                    </span>
+                                </td>
                                 <td>
                                     <?php if ($a['is_submitted']): ?>
-                                        <span style="background-color: #D1FAE5; color: #065F46; padding: 2px 8px; border-radius: 9999px; font-weight: 600; font-size: 0.85em;">Completed</span>
+                                        <span class="status-pill" style="background: #ecfdf5; color: #059669; border: 1px solid #d1fae5;">
+                                            <i class="fas fa-check-circle"></i> Completed
+                                        </span>
                                     <?php else: ?>
-                                        <span style="background-color: #FEF3C7; color: #B45309; padding: 2px 8px; border-radius: 9999px; font-weight: 600; font-size: 0.85em;">Pending</span>
+                                        <span class="status-pill" style="background: #fffbeb; color: #d97706; border: 1px solid #fef3c7;">
+                                            <i class="fas fa-clock"></i> Pending
+                                        </span>
                                     <?php endif; ?>
                                 </td>
                                 <td>
                                     <?php if (!$a['is_submitted']): ?>
-                                        <a href="submit.php?exam_id=<?php echo $a['exam_id']; ?>" class="btn" style="padding: 0.5rem 1rem; font-size: 0.8em;"><i class="fas fa-pen"></i> Submit Report</a>
+                                        <a href="submit.php?exam_id=<?php echo $a['exam_id']; ?>" class="btn btn-sm" style="display: flex; align-items: center; gap: 6px; width: fit-content;">
+                                            <i class="fas fa-pen-to-square"></i> Submit Report
+                                        </a>
                                     <?php else: ?>
-                                        <span style="color: #9CA3AF; font-size: 0.9em;"><i class="fas fa-check"></i> Submitted</span>
+                                        <span style="color: var(--text-muted); font-size: 0.85rem; font-weight: 500;">
+                                            <i class="fas fa-file-circle-check" style="color: var(--primary-color);"></i> Report Logged
+                                        </span>
                                     <?php endif; ?>
                                 </td>
                             </tr>
                             <?php endforeach; ?>
-                            <?php if (empty($assignments)) echo "<tr><td colspan='6' style='text-align:center; color:#999;'>No exams assigned to you yet.</td></tr>"; ?>
+                            <?php if (empty($assignments)): ?>
+                            <tr>
+                                <td colspan="5" class="empty-state">
+                                    <div style="padding: 3rem;">
+                                        <i class="fas fa-calendar-xmark" style="font-size: 3rem; color: #e2e8f0; margin-bottom: 1rem; display: block;"></i>
+                                        No exams assigned to you yet.
+                                    </div>
+                                </td>
+                            </tr>
+                            <?php endif; ?>
                         </tbody>
                     </table>
                 </div>
             </div>
-        </div>
     </div>
+</div>
 </body>
 </html>
